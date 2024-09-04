@@ -1,0 +1,84 @@
+<html>
+  <head>
+    <link
+      rel="stylesheet"
+      href="http://esironal.github.io/cmtouch/lib/codemirror.css"
+    />
+    <link
+      rel="stylesheet"
+      href="http://esironal.github.io/cmtouch/addon/hint/show-hint.css"
+    />
+    <script src="http://esironal.github.io/cmtouch/lib/codemirror.js"></script>
+    <script src="http://esironal.github.io/cmtouch/addon/hint/show-hint.js"></script>
+    <script src="http://esironal.github.io/cmtouch/addon/hint/xml-hint.js"></script>
+    <script src="http://esironal.github.io/cmtouch/addon/hint/html-hint.js"></script>
+    <script src="http://esironal.github.io/cmtouch/mode/xml/xml.js"></script>
+    <script src="http://esironal.github.io/cmtouch/mode/javascript/javascript.js"></script>
+    <script src="http://esironal.github.io/cmtouch/mode/css/css.js"></script>
+    <script src="http://esironal.github.io/cmtouch/mode/htmlmixed/htmlmixed.js"></script>
+    <script src="http://esironal.github.io/cmtouch/addon/selection/active-line.js"></script>
+    <script src="http://esironal.github.io/cmtouch/addon/edit/matchbrackets.js"></script>
+
+    <link
+      rel="stylesheet"
+      href="http://esironal.github.io/cmtouch/theme/neonsyntax.css"
+    />
+  </head>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 50%;
+      height: auto;
+    }
+    .CodeMirror {
+      font-size: 15px;
+      width: 100%;
+      height: 500px;
+    }
+  </style>
+  <body>
+    <div class="container">
+      <div
+        style="margin-bottom: 2%; text-align: center; width: 100%; height: auto"
+      >
+        <h1>Clase 5</h1>
+        <p>Interprete</p>
+      </div>
+      <div id="code" style="width: 100%"></div>
+      <div style="margin-top: 2px">
+        <button id="executeBtn">Ejecutar</button>
+        <button onclick="clearCode()">Limpiar</button>
+      </div>
+    </div>
+    <script type="text/javascript">
+      CodeMirror.commands.autocomplete = function (cm) {
+        CodeMirror.showHint(cm, CodeMirror.hint.java);
+      };
+      window.onload = function () {
+        editor = CodeMirror(document.getElementById("code"), {
+          mode: "Java",
+          theme: "neonsyntax",
+          lineWrapping: true,
+          lineNumbers: true,
+          styleActiveLine: true,
+          matchBrackets: true,
+
+          extraKeys: {
+            "Ctrl-Space": "autocomplete",
+          },
+        });
+      };
+    </script>
+    <script type="module" src="main.js"></script>
+  </body>
+  <script src="https://unpkg.com/peggy"></script>
+  <script src="https://cdn.jsdelivr.net/npm/peggy"></script>
+</html>
