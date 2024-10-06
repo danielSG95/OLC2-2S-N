@@ -1,0 +1,5 @@
+struct persona{
+  string:nombre;
+  string:apellido;
+  string:test
+};
