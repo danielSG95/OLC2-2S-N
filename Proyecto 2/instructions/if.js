@@ -1,6 +1,5 @@
-import Instruction from "../abstract/instruction.js"
+import Instruction from "../abstract/instruction.js";
 import Environment from "../symbol/env.js";
-
 
 class If extends Instruction {
   constructor(linea, columna, expresion, bloqueSi, bloqueNo, rif) {
@@ -12,33 +11,22 @@ class If extends Instruction {
     this.rif = rif;
   }
 
-  execute(env) {
-    console.log('Declaracion de If');
+  execute(env, gen) {
+    gen.comment("Generando If");
 
-    const resultado = this.expresion.execute(env);
+    const resultado = this.expresion.execute(env); // Value
 
-    console.log(resultado);
+    let newLabel = gen.newLabel();
+    resultado.truelvl.forEach((element) => gen.addBodyLabel(element));
 
-    if (resultado.value === true) {
-      const inner_env = new Environment(env);
-      for (let i = 0; i < this.bloqueSi.length(); i++) {
-        this.bloqueSi[i].execute(inner_env);
-      }
-    } else {
-      // si la condicion no se cumple. 
-
-      if (this.rif !== undefined || this.rif !== null) {
-        this.rif.execute(env);
-      }
-
-      if (this.bloqueNo !== undefined || this.bloqueNo !== null) {
-        const inner_env = new Environment(env);
-        for (let i = 0; i < this.bloqueNo.length(); i++) {
-          this.bloqueNo[i].execute(inner_env);
-        }
-      }
-
+    let new_env = new Environment(env);
+    // recorrer los bloques SI.
+    for (let i = 0; i < this.bloqueSi.length; i++) {
+      this.bloqueSi[i].execute(new_env);
     }
+
+    // crear los bodys para el false.
+    // recorrer los bloques NO.
   }
 }
 

@@ -1,5 +1,6 @@
 import Expression from "../abstract/expression.js";
 import Type from "../symbol/type.js";
+import Value from "../symbol/Value.js";
 
 class Literal extends Expression {
   constructor(line, column, value, type) {
@@ -19,9 +20,7 @@ class Literal extends Expression {
         gen.addBr();
         gen.comment("Agregando un Literal de tipo INTEGER");
         gen.addLi("t0", this.value.toString());
-        gen.addLi("t3", temp.toString());
-        gen.addSw("t0", "0(t3)"); // 0(t#)
-        return Value(temp.toString(), true, this.type, [], [], []);
+        return new Value("t0", true, this.type, [], [], []);
       case Type.FLOAT:
         // ....
         break;
@@ -29,3 +28,5 @@ class Literal extends Expression {
     return temp;
   }
 }
+
+export default Literal;

@@ -5,16 +5,36 @@ class Generator {
     this.TempList = []; // lista de temporales
     this.Label = 0;
     this.FinalCode = []; // encabezado y el footer
+    this.Data = []; // array de .data
+    //this.Stack = []; // stack
+    this.spCounter = 1;
   }
 
   getCode() {
     return this.Code;
   }
 
+  newTemp() {
+    this.Temporal += 4;
+    return this.Temporal;
+  }
+
   getFinalCode() {
     // add headers
     // add footer
+    this.addHeaders();
+    this.addFooters();
     return this.Code.join("");
+  }
+
+  newLabel() {
+    let temp = this.Label;
+    this.Label++;
+    return `L${temp}`; // L1, L2, L3, L4
+  }
+
+  newBodyLabel(label) {
+    this.Code.push(`\t${label}:\n`);
   }
 
   newTemp() {
@@ -57,6 +77,10 @@ class Generator {
 
   addBlt(left, right, target) {
     this.Code.push(`\tblt ${left}, ${right}, ${target}\n`);
+  }
+
+  addSlt(rd, left, rigth) {
+    this.Code.push(`\tslt ${rd}, ${left}, ${rigth}\n`);
   }
 
   addBgt(left, right, target) {
@@ -111,4 +135,10 @@ class Generator {
     this.Code.push("\tli a7, 93\n");
     this.Code.push("\tecall\n");
   }
+
+  addData(code) {
+    this.Data.push(code);
+  }
 }
+
+export default Generator;

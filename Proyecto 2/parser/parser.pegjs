@@ -143,18 +143,18 @@ expresion_logica
   = e:expresion_relacional op:(_("&&"/"||")_) {
     return op.reduce(function(result, element){
       const loc = location()?.start;
-      if(element[1] === "&&") return Logical(loc?.line, loc?.column, result, element[3], BOOLEANOP.AND);
-      else if(element[1] === "||") return Logical(loc?.line, loc?.column, result, element[3], BOOLEANOP.OR);
+      if(element[1] === "&&") return Logical(loc?.line, loc?.column, result, element[3], BOOLEAN_OP.AND);
+      else if(element[1] === "||") return Logical(loc?.line, loc?.column, result, element[3], BOOLEAN_OP.OR);
     }, e)
   }
   / e:expresion_relacional
 
 expresion_relacional
-  = e:expresion_numerica op:(_(">"/"<")_) {
+  = e:expresion_numerica op:(_(">"/"<")_) e1:expresion_numerica {
     return op.reduce(function(result, element){
       const loc = location()?.start;
-      if(element[1] === ">") return new Relational(loc?.line,loc?.column, result, element[3], RELATIONALOP.MAYOR_QUE);
-      else if(element[1] === "<") return new Relational(loc?.line,loc?.column, result, element[3], RELATIONALOP.MENOR_QUE);
+      if(element[1] === ">") return new Relational(loc?.line,loc?.column, e, e1, RELATIONAL_OP.MAYOR_QUE);
+      else if(element[1] === "<") return new Relational(loc?.line,loc?.column, e, e1, RELATIONAL_OP.MENOR_QUE);
     }, e)
   }
   / e:expresion_numerica

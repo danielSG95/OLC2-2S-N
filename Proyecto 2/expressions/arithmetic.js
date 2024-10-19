@@ -14,53 +14,37 @@ class Arithmetic extends Expression {
   }
 
   execute(env, gen) {
+    // manejarlo a nivel de stack.
     const resultado_izdo = this.left.execute(env, gen);
+    if (this.left instanceof Arithmetic === false) {
+      gen.comment("Moviendo el valor cargado al registo temporal t1");
+      gen.addMove("t1", "t0");
+    }
+
     const resultado_derecho = this.right.execute(env, gen);
+    gen.comment("Moviendo el valor cargado al registo temporal t2");
+    gen.addMove("t2", "t0");
 
     gen.addBr();
     gen.comment(`Realizando operacion: ${this.op}`);
 
-    if (resultado_izdo.value.includes("t")) {
-      gen.addMove("t3", resultado_izdo.value);
-    }
-
-    gen.addLw("t1", "0(t3)");
-
-    if (resultado_derecho.value.includes("t")) {
-      gen.addMove("t3", resultado_derecho.value);
-    }
-
-    gen.addLw("t2", "0(t3)");
-
-    let temp = gen.newTemp();
-
     if (this.op === 0) {
-      gen.addOperation("add", "t0", "t1", "t2");
-      gen.addLi("t3", temp.toString());
-      gen.addSw("t0", "0(t3)");
+      gen.addOperation("add", "t1", "t1", "t2");
 
-      return Value(temp.toString(), true, Type.INTEGER, [], [], []);
+      return new Value("t1", true, Type.INTEGER, [], [], []);
     } else if (this.op === 1) {
-      return new Literal(
-        this.line,
-        this.column,
-        resultado_izdo.value - resultado_derecho.value,
-        Type.INT
-      );
+      gen.addOperation("sub", "t1", "t1", "t2");
+      return new Value("t1", true, Type.INTEGER, [], [], []);
     } else if (this.op === 2) {
-      return new Literal(
-        this.line,
-        this.column,
-        resultado_izdo.value * resultado_derecho.value,
-        Type.INT
-      );
+      gen.addOperation("mul", "t1", "t1", "t2");
+      return new Value("t1", true, Type.INTEGER, [], [], []);
     } else if (this.op === 3) {
-      return new Literal(
-        this.line,
-        this.column,
-        resultado_izdo.value / resultado_derecho.value,
-        Type.INT
-      );
+      if (resultado_derecho.value === 0) {
+        throw new Error("Division por cero");
+      }
+
+      gen.addOperation("div", "t1", "t1", "t2");
+      return new Value("t1", true, Type.INTEGER, [], [], []);
     }
   }
 }
