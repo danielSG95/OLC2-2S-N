@@ -5,7 +5,10 @@ import Generator from "./symbol/Generator.js";
 let executeBtn = document.getElementById("executeBtn");
 
 executeBtn.onclick = function () {
-  const codigo = `int suma= 2 + 2 * 3;`;
+  const codigo = `int suma= 2 + 2 * 3;
+  boolean result = 4>3;
+  println(12);
+  println(result);`;
 
   const resultado = parse(codigo);
   const global = new Environment(null);

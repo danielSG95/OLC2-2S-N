@@ -31,20 +31,20 @@ class Arithmetic extends Expression {
     if (this.op === 0) {
       gen.addOperation("add", "t1", "t1", "t2");
 
-      return new Value("t1", true, Type.INTEGER, [], [], []);
+      return new Value("t1", true, Type.INT, [], [], []);
     } else if (this.op === 1) {
       gen.addOperation("sub", "t1", "t1", "t2");
-      return new Value("t1", true, Type.INTEGER, [], [], []);
+      return new Value("t1", true, Type.INT, [], [], []);
     } else if (this.op === 2) {
       gen.addOperation("mul", "t1", "t1", "t2");
-      return new Value("t1", true, Type.INTEGER, [], [], []);
+      return new Value("t1", true, Type.INT, [], [], []);
     } else if (this.op === 3) {
       if (resultado_derecho.value === 0) {
         throw new Error("Division por cero");
       }
 
       gen.addOperation("div", "t1", "t1", "t2");
-      return new Value("t1", true, Type.INTEGER, [], [], []);
+      return new Value("t1", true, Type.INT, [], [], []);
     }
   }
 }

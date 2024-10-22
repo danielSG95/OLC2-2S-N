@@ -14,7 +14,7 @@ class Declaracion extends Instruction {
 
   execute(env, gen) {
     gen.comment(`Declarando variable: ${this.nombre}`);
-    if (this.tipo === Type.INT) {
+    if (this.tipo === Type.INT || this.tipo === Type.BOOLEAN) {
       gen.addData(`\t${this.nombre}: .word 0\n`);
     } else if (this.tipo === Type.STRING) {
       gen.addData(`\t${this.nombre}: .asciiz ""\n`);
@@ -33,7 +33,7 @@ class Declaracion extends Instruction {
 
     gen.addSw(result.value, "0(t3)");
 
-    env.add_symbol(new Symbol(this.nombre, result, result.type));
+    env.add_symbol(new Symbol(this.nombre.trim(), result, result.type));
   }
 }
 

@@ -35,11 +35,18 @@ instruccion
   / inst:declaracion
   / inst:asignacion
   / inst:funcion
+  / inst:print
 
 
-// declaracion -> tipo id = expresion;
+print
+  = _ "println" "(" e:expresion ")" ";" {
+    const loc = location()?.start;
+    return new Print(loc?.line, loc?.column, e);
+  }
+
+// declaracion -> tipo id = expresion;w
 declaracion
-  = type:tipo id:ID "=" expr:expresion ";" {
+  = type:tipo id:ID _ "=" expr:expresion ";" {
     const loc = location()?.start;
     return new Declaracion(loc?.line, loc?.column, id, type, expr);
   }
@@ -150,7 +157,7 @@ expresion_logica
   / e:expresion_relacional
 
 expresion_relacional
-  = e:expresion_numerica op:(_(">"/"<")_) e1:expresion_numerica {
+  = e:expresion_numerica op:(_(">"/"<")_)* e1:expresion_numerica {
     return op.reduce(function(result, element){
       const loc = location()?.start;
       if(element[1] === ">") return new Relational(loc?.line,loc?.column, e, e1, RELATIONAL_OP.MAYOR_QUE);
@@ -195,7 +202,7 @@ terminal
   }
   / valor:ID {
     const loc = location()?.start;
-    return new Literal(loc?.line, loc?.column, valor, Type.IDENTIFICADOR);
+    return new Literal(loc?.line, loc?.column, valor, Type.IDENTIFIER);
   }
   / valor:FLOAT {
     const loc = location()?.start;
@@ -241,6 +248,7 @@ attr_def
 
 tipo
   = type:(_("int"/"float"/"string"/id:ID/"boolean"/"char")_){
+    console.log(type);
     if(type[1] === "int") return Type.INT;
     else if(type[1] === "float") return Type.FLOAT;
     else  if(type[1] === "string") return Type.STRING;

@@ -115,6 +115,10 @@ class Generator {
     this.Code.push(`\tmv ${left}, ${right}\n`);
   }
 
+  addSeqz(rs2, rs1) {
+    this.Code.push(`\tseqz ${rs2}, ${rs1}\n`);
+  }
+
   // add, mult, etc.
   addOperation(operation, target, left, right) {
     this.Code.push(`\t${operation} ${target}, ${left}, ${right}\n`);

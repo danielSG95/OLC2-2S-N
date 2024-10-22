@@ -24,6 +24,15 @@ class Literal extends Expression {
       case Type.FLOAT:
         // ....
         break;
+      case Type.IDENTIFIER:
+        let variable = env.buscar_variable(this.value);
+        if (variable === null) {
+          throw new Error(`Variable ${this.value} no declarada`);
+        }
+        gen.comment("Resolviendo variable en TS");
+        gen.addLa("t3", variable.id);
+        gen.addLw("t3", "0(t3)");
+        return new Value("t3", true, variable.type, [], [], []);
     }
     return temp;
   }
